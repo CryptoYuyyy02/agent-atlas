@@ -589,7 +589,7 @@ function draw(now){
     ctx.fillStyle = '#e8b34b';
     ctx.beginPath(); ctx.ellipse(cx, PADY+BH+22, 3.4, 7 + Math.sin(now/160 + x)*1.5, 0, 0, Math.PI*2); ctx.fill();
   }
-  ctx.font = '600 11.5px sans-serif'; ctx.textAlign = 'center';
+  ctx.font = '600 16px sans-serif'; ctx.textAlign = 'center';
   ctx.fillStyle = danger ? '#ff9d7a' : 'rgba(255,217,150,.55)';
   ctx.fillText(lang==='zh' ? (danger ? '⚠ 防线告急 · 蛾子过线就啃被子' : '防 线 · 蛾子过线啃被子') : (danger ? '⚠ THE LINE IS ABOUT TO BREAK' : 'THE LINE · moths crossing it nibble the quilt'), PADX + BW/2, PADY+BH+58);
   if(run){
@@ -668,10 +668,10 @@ function draw(now){
       ctx.fillStyle = vg; ctx.fillRect(0,0,VW,VH);
     }
   } else {
-    ctx.fillStyle = '#f3e2c7'; ctx.font = '600 21px sans-serif'; ctx.textAlign = 'center';
-    ctx.fillText(lang==='zh'?'点「开始经典局」点亮蜡烛':'Start a run to light the candles', VW/2, VH/2 - 8);
-    ctx.font = '14px sans-serif'; ctx.fillStyle = '#cbb391';
-    ctx.fillText(lang==='zh'?'蛾群正在黑暗里靠近…':'The moths are gathering in the dark…', VW/2, VH/2 + 22);
+    ctx.fillStyle = '#f3e2c7'; ctx.font = '600 30px sans-serif'; ctx.textAlign = 'center';
+    ctx.fillText(lang==='zh'?'点「开始经典局」点亮蜡烛':'Start a run to light the candles', VW/2, VH/2 - 10);
+    ctx.font = '19px sans-serif'; ctx.fillStyle = '#cbb391';
+    ctx.fillText(lang==='zh'?'蛾群正在黑暗里靠近…':'The moths are gathering in the dark…', VW/2, VH/2 + 28);
   }
   if(animT < 1) animT = Math.min(1, animT + 1/14);
 }
