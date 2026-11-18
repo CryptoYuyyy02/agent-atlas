@@ -1,0 +1,853 @@
+[
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "registry_",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "inputs": [],
+    "name": "AlreadyCheckedInToday",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "AlreadyEndorsed",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "AlreadyRegistered",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "BlurbTooLong",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "DuplicateRun",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "EmptyHandle",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidCategory",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidMode",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidNights",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidSeed",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NoAgentId",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NotRegistered",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ReferrerNotRegistered",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ScoreImplausible",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "SelfEndorsement",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "SelfReferral",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "TargetNotRegistered",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "XHandleTooLong",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ZeroRunHash",
+    "type": "error"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "agent",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint8",
+        "name": "category",
+        "type": "uint8"
+      }
+    ],
+    "name": "CardUpdated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "agent",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint32",
+        "name": "streak",
+        "type": "uint32"
+      }
+    ],
+    "name": "CheckedIn",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "from",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "to",
+        "type": "address"
+      }
+    ],
+    "name": "Endorsed",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "agent",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "referrer",
+        "type": "address"
+      }
+    ],
+    "name": "ReferralBound",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "agent",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "handle",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint8",
+        "name": "category",
+        "type": "uint8"
+      }
+    ],
+    "name": "Registered",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "agent",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint8",
+        "name": "mode",
+        "type": "uint8"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint32",
+        "name": "score",
+        "type": "uint32"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint32",
+        "name": "nights",
+        "type": "uint32"
+      },
+      {
+        "indexed": false,
+        "internalType": "bytes32",
+        "name": "runHash",
+        "type": "bytes32"
+      }
+    ],
+    "name": "ScoreSubmitted",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "agent",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "bool",
+        "name": "visible",
+        "type": "bool"
+      }
+    ],
+    "name": "XProfileSet",
+    "type": "event"
+  },
+  {
+    "inputs": [],
+    "name": "BASE_SCORE_ALLOWANCE",
+    "outputs": [
+      {
+        "internalType": "uint32",
+        "name": "",
+        "type": "uint32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "MAX_BLURB_BYTES",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "MAX_CATEGORY",
+    "outputs": [
+      {
+        "internalType": "uint8",
+        "name": "",
+        "type": "uint8"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "MAX_NIGHTS",
+    "outputs": [
+      {
+        "internalType": "uint32",
+        "name": "",
+        "type": "uint32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "MAX_X_HANDLE_BYTES",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "MODE_CLASSIC",
+    "outputs": [
+      {
+        "internalType": "uint8",
+        "name": "",
+        "type": "uint8"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "MODE_DAILY",
+    "outputs": [
+      {
+        "internalType": "uint8",
+        "name": "",
+        "type": "uint8"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "SCORE_CAP_LINEAR",
+    "outputs": [
+      {
+        "internalType": "uint32",
+        "name": "",
+        "type": "uint32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "SCORE_CAP_QUADRATIC",
+    "outputs": [
+      {
+        "internalType": "uint32",
+        "name": "",
+        "type": "uint32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "name": "addressOfCode",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "index",
+        "type": "uint256"
+      }
+    ],
+    "name": "agentAt",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "checkIn",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "codeOf",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "who",
+        "type": "address"
+      }
+    ],
+    "name": "deriveCode",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "stateMutability": "pure",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "target",
+        "type": "address"
+      }
+    ],
+    "name": "endorse",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "who",
+        "type": "address"
+      }
+    ],
+    "name": "getAgent",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "handle",
+        "type": "string"
+      },
+      {
+        "internalType": "uint8",
+        "name": "category",
+        "type": "uint8"
+      },
+      {
+        "internalType": "string",
+        "name": "blurb",
+        "type": "string"
+      },
+      {
+        "internalType": "uint64",
+        "name": "registeredAt",
+        "type": "uint64"
+      },
+      {
+        "internalType": "uint32",
+        "name": "streak",
+        "type": "uint32"
+      },
+      {
+        "internalType": "uint32",
+        "name": "totalCheckIns",
+        "type": "uint32"
+      },
+      {
+        "internalType": "uint64",
+        "name": "lastCheckInDay",
+        "type": "uint64"
+      },
+      {
+        "internalType": "uint32",
+        "name": "endorsementsReceived",
+        "type": "uint32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "who",
+        "type": "address"
+      }
+    ],
+    "name": "getClassicScore",
+    "outputs": [
+      {
+        "internalType": "uint32",
+        "name": "bestScore",
+        "type": "uint32"
+      },
+      {
+        "internalType": "uint32",
+        "name": "bestNights",
+        "type": "uint32"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "runHash",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "uint64",
+        "name": "updatedAt",
+        "type": "uint64"
+      },
+      {
+        "internalType": "uint32",
+        "name": "submissions",
+        "type": "uint32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "who",
+        "type": "address"
+      }
+    ],
+    "name": "getScore",
+    "outputs": [
+      {
+        "internalType": "uint32",
+        "name": "bestScore",
+        "type": "uint32"
+      },
+      {
+        "internalType": "uint32",
+        "name": "bestNights",
+        "type": "uint32"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "runHash",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "uint64",
+        "name": "updatedAt",
+        "type": "uint64"
+      },
+      {
+        "internalType": "uint32",
+        "name": "submissions",
+        "type": "uint32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "who",
+        "type": "address"
+      }
+    ],
+    "name": "getXProfile",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "handle",
+        "type": "string"
+      },
+      {
+        "internalType": "bool",
+        "name": "visible",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "globalCheckIns",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "globalEndorsements",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "globalScoreSubmissions",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "from",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "to",
+        "type": "address"
+      }
+    ],
+    "name": "hasEndorsed",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "who",
+        "type": "address"
+      }
+    ],
+    "name": "isRegistered",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "referrerOf",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint8",
+        "name": "category",
+        "type": "uint8"
+      },
+      {
+        "internalType": "string",
+        "name": "blurb",
+        "type": "string"
+      },
+      {
+        "internalType": "address",
+        "name": "referrer",
+        "type": "address"
+      }
+    ],
+    "name": "register",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "registry",
+    "outputs": [
+      {
+        "internalType": "contract IAgentIdRegistryV6",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "handle",
+        "type": "string"
+      },
+      {
+        "internalType": "bool",
+        "name": "visible",
+        "type": "bool"
+      }
+    ],
+    "name": "setXProfile",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint8",
+        "name": "mode",
+        "type": "uint8"
+      },
+      {
+        "internalType": "uint32",
+        "name": "seed",
+        "type": "uint32"
+      },
+      {
+        "internalType": "uint32",
+        "name": "score",
+        "type": "uint32"
+      },
+      {
+        "internalType": "uint32",
+        "name": "nights",
+        "type": "uint32"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "runHash",
+        "type": "bytes32"
+      }
+    ],
+    "name": "submitScore",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "totalAgents",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint8",
+        "name": "category",
+        "type": "uint8"
+      },
+      {
+        "internalType": "string",
+        "name": "blurb",
+        "type": "string"
+      }
+    ],
+    "name": "updateCard",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  }
+]
