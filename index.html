@@ -142,7 +142,7 @@
     <h2>排行榜<span class="en">Season Board</span></h2>
     <p class="hint">直接读链生成，只列已提交成绩的玩家；绑定了 X 的显示 X（自填，未验证）。完整榜在<a href="game/">游戏页</a>。</p>
     <div id="boardBody"><div class="empty">正在读链…</div></div>
-    <p class="hint">奖金分配（占奖池总额）：第 1 名 32% · 第 2 名 20% · 第 3 名 12% · 第 4–10 名平分 16% · 推荐榜 20%（按推荐分占比分，满 100 起分）。预估奖金按当前奖池实时计算，赛季结束按最终奖池与最终排名结算。</p>
+    <p class="hint">奖金分配（占奖池总额）：第 1 名 20% · 第 2 名 12% · 第 3 名 8% · 第 4–10 名平分 14% · 第 11–50 名平分 16% · 第 51–100 名平分 10% · 推荐榜 20%（按推荐分占比分，满 100 起分）。名次空缺的份额按比例补给实际中奖者。预估奖金按当前奖池实时计算，赛季结束按最终奖池与最终排名结算。</p>
   </section>
 
   <section id="refboard">
@@ -220,7 +220,7 @@ const CATEGORIES = ['其他','交易','打新/NFT','游戏','内容','工具','D
 
 let poolUSDT = null;
 // Prize split, % of the TOTAL pool: skill board 80% (1st 32 / 2nd 20 / 3rd 12 / 4th-10th share 16), referral board 20% (opens with the referral launch, pro-rata by referral points)
-function prizePct(rank){ if(rank===1) return 32; if(rank===2) return 20; if(rank===3) return 12; if(rank>=4 && rank<=10) return 16/7; return 0; }
+function prizePct(rank){ if(rank===1) return 20; if(rank===2) return 12; if(rank===3) return 8; if(rank>=4 && rank<=10) return 14/7; if(rank>=11 && rank<=50) return 16/40; if(rank>=51 && rank<=100) return 10/50; return 0; }
 function fillPrizes(){
   document.querySelectorAll('.prize-cell').forEach(td=>{
     const pct = prizePct(+td.dataset.rank);
