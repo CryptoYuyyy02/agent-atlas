@@ -101,10 +101,10 @@
       <div class="lbl">第一赛季奖金池 · Season 1 Prize Pool</div>
       <div class="amt" id="prizeAmt">链上读取中…</div>
       <div class="lbl" id="prizeNote">USDT（BSC）· 赛季结束按排行榜名次发放 · 发奖前复演验真</div>
-      <div class="spon">奖池构成：<b>主办打底 10 USDT（已到账）</b> + 黑客松获奖奖金的一半（最高 +2,900 USDC，未获奖则无此项） + 社区赞助（实时计入）。任何人都可以赞助：往下面这个<b>公开奖池地址</b>打 BSC 链 USDT 即可，金额实时累计、全程链上可查。</div>
-      <div class="pooladdr">0xCDbb2d59f3A1bD8e81A9605a4e941bcACCc4FD38</div>
+      <div class="spon">奖池构成：<b>主办打底 10 USDT（已到账）</b> + 黑客松获奖奖金的一半（最高 +2,900 USDC，未获奖则无此项） + 社区赞助（实时计入）。任何人都可以赞助：往下面这个<b>公开奖池地址</b>打 BSC 链 USDT 即可，金额实时累计、全程链上可查。奖池已转入<b>托管合约</b>锁定：主办无法动用其中资金，赛季结束提交最终名单、公示 72 小时后由合约按名次自动发放。</div>
+      <div class="pooladdr">0x9fFDB11BeDA87a8e8087a164f3c591f482E09441</div>
       <div style="margin-top:10px"><button class="gold" id="copyPoolBtn">📋 复制奖池地址，去赞助</button> <span class="lbl" id="copyPoolState"></span></div>
-      <div class="lbl"><a href="https://bscscan.com/token/0x55d398326f99059fF775485246999027B3197955?a=0xCDbb2d59f3A1bD8e81A9605a4e941bcACCc4FD38" target="_blank" rel="noopener">在 BscScan 查看奖池余额 ↗</a> · 赞助不退、全额按榜发放 · 赞助 ≥1 USDT 自动上赞助墙（按地址显示；想显示名字/X，把地址或哈希发给主办即可）</div>
+      <div class="lbl"><a href="https://bscscan.com/token/0x55d398326f99059fF775485246999027B3197955?a=0x9fFDB11BeDA87a8e8087a164f3c591f482E09441" target="_blank" rel="noopener">在 BscScan 查看奖池余额 ↗</a> · 赞助不退、全额按榜发放 · 赞助 ≥1 USDT 自动上赞助墙（按地址显示；想显示名字/X，把地址或哈希发给主办即可）</div>
       <div class="spon">赞助墙 · Sponsors：<b>主办 @Feljoy_ix</b> — 10 USDT</div>
       <div class="count">距赛季结束（12 月 9 日 16:00 北京）<br><b id="countdown">计算中…</b></div>
     </div>
@@ -193,7 +193,7 @@
 'use strict';
 // ---- season config ----
 const USDT = '0x55d398326f99059fF775485246999027B3197955';
-const POOL = '0xCDbb2d59f3A1bD8e81A9605a4e941bcACCc4FD38'; // public season prize pool wallet (BSC USDT)
+const POOL = '0x9fFDB11BeDA87a8e8087a164f3c591f482E09441'; // season prize pool vault contract (BSC USDT, escrowed)
 const SEASON_END_UTC = Date.UTC(2026, 11, 9, 8, 0, 0); // 2026-12-09 16:00 Beijing
 const ATLAS = '0x935e72e456cE6b2cc2c7Fa79bbCB843D44C7Eee1';
 // Multi-endpoint BSC RPC: some networks block individual domains, so fall over to
