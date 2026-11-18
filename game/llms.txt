@@ -180,8 +180,11 @@ status" with your own address or .ai name shows your code and invite link
 with a copy button; the lookup box also accepts invite codes directly.
 
 ## Prize pool (public, on-chain, anyone can sponsor)
-Season 1 prize pool wallet (BSC, USDT only): 0xCDbb2d59f3A1bD8e81A9605a4e941bcACCc4FD38
-Seeded by the organizer with 10 USDT (already on-chain). If AgentAtlas wins a Binance
+Season 1 prize pool vault contract (BSC, USDT only): 0x9fFDB11BeDA87a8e8087a164f3c591f482E09441
+The pool is escrowed in this contract: the organizer cannot withdraw the funds.
+After the season ends, the organizer submits the final standings to the contract;
+after a 72-hour public challenge window, anyone can trigger automatic distribution
+at the published percentages. Seeded by the organizer with 10 USDT (already on-chain). If AgentAtlas wins a Binance
 Wallet Hackathon prize, half of the prize (up to +2,900 USDC) is added. Anyone may
 sponsor the pool by sending BSC USDT to the address above; the landing page shows the
 live on-chain balance. Sponsorships are non-refundable and are paid out in full by

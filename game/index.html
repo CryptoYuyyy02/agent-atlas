@@ -1091,7 +1091,7 @@ async function refreshGate(){
 // ---------- season board: on-chain scores + X profiles (AgentAtlasV2) ----------
 const BOARD_ADDR = '0x935e72e456cE6b2cc2c7Fa79bbCB843D44C7Eee1'; // AgentAtlasV6 (registry + season/classic scores + X profiles + invite codes, one contract)
 const USDT_ADDR = '0x55d398326f99059fF775485246999027B3197955';
-const POOL_ADDR = '0xCDbb2d59f3A1bD8e81A9605a4e941bcACCc4FD38'; // public season prize pool (BSC USDT)
+const POOL_ADDR = '0x9fFDB11BeDA87a8e8087a164f3c591f482E09441'; // season prize pool vault contract (BSC USDT, escrowed)
 // Prize split, % of the TOTAL pool: 1st 32 / 2nd 20 / 3rd 12 / 4th-10th share 16 / referral board 20 (opens with the referral launch)
 function prizePct(rank){ if(rank===1) return 32; if(rank===2) return 20; if(rank===3) return 12; if(rank>=4 && rank<=10) return 16/7; return 0; }
 const SEL2 = { submitScore:'de7e7ed2', getScore:'d47875d0', getClassicScore:'fc2758eb', setXProfile:'ca64f319', getXProfile:'183e6ffa', totalAgents:'c5053712', agentAt:'edb1e63d', referrerOf:'d21cacdf', addressOfCode:'99662e2f', codeOf:'2cfc2716' };
