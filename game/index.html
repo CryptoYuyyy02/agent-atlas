@@ -1219,7 +1219,7 @@ async function loadBoard(){
         html += `<tr style="border-top:1px solid #3a2d18"><td style="padding:4px 2px;width:34px">${medal}</td><td style="padding:4px 2px">${who}</td><td style="padding:4px 2px;text-align:right"><b style="color:#ffe9bd">${r.best.toLocaleString()}</b></td><td style="padding:4px 2px;text-align:right;color:#cbb391">${r.nights}${z?'夜':'n'} · ${r.subs}${z?'次':'x'}</td><td style="padding:4px 2px;text-align:right;color:#ffd94d">${prizeTxt}</td></tr>`;
       });
       html += '</table>';
-      html += `<div style="margin-top:6px;color:#8a7648;font-size:12px">${z?'奖金分配（占奖池）：第 1 名 32% · 第 2 名 20% · 第 3 名 12% · 第 4–10 名平分 16% · 推荐榜 20%（按推荐分占比，满 100 起分）。预估按当前奖池实时计算，赛季结束按最终奖池与排名结算。':'Prize split of the pool: 1st 32% · 2nd 20% · 3rd 12% · 4th-10th share 16% · referral board 20% (pro-rata by referral points, 100+ to qualify). Estimates use the live pool; final payouts use the final pool and standings.'}</div>`;
+      html += `<div style="margin-top:6px;color:#8a7648;font-size:12px">${z?'奖金分配（占奖池）：第 1 名 20% · 第 2 名 12% · 第 3 名 8% · 第 4–10 名平分 14% · 第 11–50 名平分 16% · 第 51–100 名平分 10% · 推荐榜 20%（按推荐分占比，满 100 起分）。名次空缺的份额按比例补给实际中奖者。预估按当前奖池实时计算，赛季结束按最终奖池与排名结算。':'Prize split of the pool: 1st 20% · 2nd 12% · 3rd 8% · 4th-10th share 14% · 11th-50th share 16% · 51st-100th share 10% · referral board 20% (pro-rata by referral points, 100+ to qualify). Shares of unfilled places are redistributed pro-rata to actual winners. Estimates use the live pool; final payouts use the final pool and standings.'}</div>`;
     }
     // referral board: points = 10% of each referee's best score (referees must have submitted)
     const refMap = new Map();
