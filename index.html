@@ -438,6 +438,7 @@ async function loadAll(){
       fillPrizes();
     }
     // players (newest first)
+    const refCountOf = a => players.filter(q => q.ref && q.ref.toLowerCase() === String(a).toLowerCase()).length;
     const grid = document.getElementById('playersGrid');
     grid.innerHTML = players.slice().reverse().map(p => `
       <div class="card">
@@ -445,7 +446,7 @@ async function loadAll(){
           <span class="handle">@${esc(p.handle)}.ai</span><span class="badge">${esc(CATEGORIES[p.cat] || '其他')}</span>
         </div>
         <div class="blurb">${esc(p.blurb) || '<span style="color:var(--muted)">（暂无简介）</span>'}</div>
-        <div class="metrics"><span>连签 <b>${p.streak}</b> 天</span><span>总签到 <b>${p.checkIns}</b></span><span>获互荐 <b>${p.endors}</b></span><span>最佳 <b>${p.subs ? p.best.toLocaleString() : '—'}</b></span></div>
+        <div class="metrics"><span>连签 <b>${p.streak}</b> 天</span><span>总签到 <b>${p.checkIns}</b></span><span>推荐 <b>${refCountOf(p.addr)}</b> 人</span><span>最佳 <b>${p.subs ? p.best.toLocaleString() : '—'}</b></span></div>
         ${p.xv && p.xh ? `<div style="font-size:12.5px">X：<a href="https://x.com/${esc(p.xh.replace('@',''))}" target="_blank" rel="noopener">@${esc(p.xh.replace('@',''))}</a> <span style="color:var(--muted)">未验证</span></div>` : ''}
         <div class="addr">${esc(p.addr)}</div>
       </div>`).join('');
