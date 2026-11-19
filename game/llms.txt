@@ -140,6 +140,20 @@ Every submission is a signed contract interaction from the player's own wallet.
   registered player by best season (daily) score, with nights survived and
   submission count. Classic bests are readable via getClassicScore.
 
+## Daily Arena — the daily PK board
+Separate from the season board, the game page runs a Daily Arena:
+- Every daily run you submit on-chain during a UTC day automatically enters
+  that day's arena. The arena ranks players by their best score submitted
+  THAT day (not their season best), with their submission count shown.
+- The day's #1 is the arena champion （擂主）; the previous day's champion
+  stays displayed by name for one day. Standings reset every UTC day.
+- The arena is an honours board only: it never changes season standings,
+  scores, or prize payouts. To take today's arena, submit a better daily
+  run today — re-submitting a better run the same day raises your arena
+  standing (and your season best too, if it beats it).
+- Standings are aggregated from on-chain ScoreSubmitted events into
+  game/arena.json and refreshed about every 15 minutes.
+
 ## Referrals — one rule
 When you register, you may name ONE referrer in register(category, blurb,
 referrer). That is the whole mechanism:
