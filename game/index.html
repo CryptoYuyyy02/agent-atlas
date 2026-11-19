@@ -1070,12 +1070,23 @@ const BSC_RPCS = ['https://bsc-dataseed.binance.org', 'https://bsc-rpc.publicnod
 let _rpcIdx = 0;
 async function rpcPost(body){
   let lastErr;
+  const isBatch = Array.isArray(body);
   for(let k = 0; k < BSC_RPCS.length; k++){
     const url = BSC_RPCS[(_rpcIdx + k) % BSC_RPCS.length];
     try{
-      const res = await fetch(url, { method:'POST', headers:{ 'Content-Type':'application/json' }, body: JSON.stringify(body) });
-      if(!res.ok) throw new Error('http ' + res.status);
-      const j = await res.json();
+      const ctl = new AbortController();
+      const timer = setTimeout(()=> ctl.abort(), 12000);
+      let res, j;
+      try{
+        res = await fetch(url, { method:'POST', headers:{ 'Content-Type':'application/json' }, body: JSON.stringify(body), signal: ctl.signal });
+        if(!res.ok) throw new Error('http ' + res.status);
+        j = await res.json();
+      } finally { clearTimeout(timer); }
+      // some endpoints answer HTTP 200 with an error object (e.g. batch rate
+      // limits): that is a failure, not a result — rotate to the next endpoint
+      // instead of sticking to the broken one
+      if(isBatch){ if(!Array.isArray(j)) throw new Error('batch response not an array'); }
+      else if(!j || j.error || j.result === undefined) throw new Error('rpc error response');
       _rpcIdx = (_rpcIdx + k) % BSC_RPCS.length;
       return j;
     }catch(e){ lastErr = e; }
@@ -1164,11 +1175,21 @@ function encStringData(s){
 }
 async function rpcBatch(calls){
   const out = new Array(calls.length);
-  for(let i=0; i<calls.length; i+=90){
-    const chunk = calls.slice(i, i+90);
+  const ZERO = '0x' + '00'.repeat(32 * 8);
+  for(let i=0; i<calls.length; i+=25){
+    const chunk = calls.slice(i, i+25);
     const body = chunk.map((c, j)=>({ jsonrpc:'2.0', id: j, method:'eth_call', params:[{ to: c.to, data: c.data }, 'latest'] }));
-    const arr = await rpcPost(body);
-    for(const item of arr) out[i + item.id] = item.result;
+    let arr = null;
+    try{ arr = await rpcPost(body); }catch(e){}
+    if(arr) for(const item of arr){ if(item && !item.error && item.result !== undefined) out[i + item.id] = item.result; }
+    // any call the batch dropped is retried on its own; a call that fails on
+    // every endpoint degrades to zeros instead of failing the whole board
+    for(let j=0; j<chunk.length; j++){
+      if(out[i + j] === undefined){
+        try{ out[i + j] = await ethCall(chunk[j].to, chunk[j].data); }catch(e){}
+        if(out[i + j] === undefined || out[i + j] === null) out[i + j] = ZERO;
+      }
+    }
   }
   return out;
 }
