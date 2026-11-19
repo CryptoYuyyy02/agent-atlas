@@ -1,0 +1,34 @@
+name: arena-standings
+# Keeps game/arena.json (daily arena standings) fresh: incremental event scan
+# of the AgentAtlasV6 contract. Commits only when the data actually changed.
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: arena-standings
+  cancel-in-progress: false
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Scan ScoreSubmitted events
+        run: node tools/arena-scan.mjs
+      - name: Commit if changed
+        if: always()
+        run: |
+          if git diff --quiet -- game/arena.json; then
+            echo "arena.json unchanged"
+            exit 0
+          fi
+          git config user.name "arena-bot"
+          git config user.email "actions@github.com"
+          git add game/arena.json
+          git commit -m "Arena standings update"
+          git push
