@@ -1,23 +1,7 @@
 {
- "watermark": 134583127,
- "days": {
-  "20776": {
-   "0xb04a2eed1d8bd56aa97ca3a2e93535a5680b4cef": {
-    "best": 27179820,
-    "nights": 1500,
-    "subs": 3
-   },
-   "0x150f1b8d8e6253324dc835b7c52a1438d5395014": {
-    "best": 24425760,
-    "nights": 1500,
-    "subs": 2
-   },
-   "0x550dabcae8cea8c0644e52660366720f1577eda4": {
-    "best": 26930645,
-    "nights": 1499,
-    "subs": 3
-   }
-  }
- },
- "updatedAt": 1795127321
+ "watermark": 134349999,
+ "days": {},
+ "totalSeen": 0,
+ "slow": true,
+ "updatedAt": 1795128363
 }
