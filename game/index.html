@@ -213,6 +213,11 @@
           </div>
         </div>
       </div>
+      <div class="card">
+        <h3>每日擂台 · Daily Arena（今日 PK 榜）</h3>
+        <div id="arenaBody" style="font-size:13px;line-height:1.7;color:#e6d3ae">加载中…</div>
+        <div style="margin-top:8px"><button id="arenaRefresh">刷新擂台</button></div>
+      </div>
   </div>
 
   <p class="foot" id="footNote">缝夜 StitchNight 是 AgentAtlas 的赛季游戏：点亮蜡烛，用线圈套住飞蛾，守住拼布被过夜。本页不连接钱包、不经手签名；登记、签到与成绩上榜都由玩家自己的 AI 钱包直接与 AgentAtlas 合约交互，排行榜直接读链生成。</p>
@@ -1330,6 +1335,53 @@ async function loadBoard(){
   }
 }
 $('boardRefresh').onclick = loadBoard;
+async function loadArena(){
+  const body = $('arenaBody'); if(!body) return;
+  const z = lang === 'zh';
+  try{
+    const res = await fetch('arena.json?ts=' + Date.now());
+    if(!res.ok) throw new Error('arena http ' + res.status);
+    const data = await res.json();
+    const nowDay = Math.floor(Date.now() / 86400000);
+    const days = data.days || {};
+    const todayMap = days[String(nowDay)] || {};
+    const ydayMap = days[String(nowDay - 1)] || {};
+    const addrs = [...new Set([...Object.keys(todayMap), ...Object.keys(ydayMap)])];
+    const names = {};
+    if(addrs.length){
+      try{
+        const rs = await rpcBatch(addrs.map(a => ({ to: BOARD_ADDR, data: '0x' + SEL.getAgent + padAddr(a) })));
+        addrs.forEach((a, i) => { try{ const h = decodeString(rs[i], 0); if(h) names[a] = h; }catch(e){} });
+      }catch(e){}
+    }
+    const who = (a) => names[a] ? '@' + esc(names[a]) + '.ai' : (a.slice(0, 6) + '…' + a.slice(-4));
+    const upd = data.updatedAt ? new Date(data.updatedAt * 1000) : null;
+    const updTxt = upd ? upd.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '';
+    let html = `<div style="color:#cbb391;font-size:12px;margin-bottom:6px">${z ? '按 UTC 日切分 · 当天交的每日局自动参赛 · 数据约每 15 分钟更新' : 'UTC days · today\'s daily submissions auto-enter · refreshes about every 15 min'}${updTxt ? ` · ${z ? '更新于' : 'updated'} ${updTxt}` : ''}</div>`;
+    const rows = Object.entries(todayMap).map(([a, v]) => ({ a, best: v.best, nights: v.nights, subs: v.subs })).sort((x, y) => y.best - x.best);
+    if(!rows.length){
+      html += `<div>${z ? '今天还没有人交每日局——第一个交分的就是今日擂主。' : 'No daily run submitted today yet — the first submission takes the arena.'}</div>`;
+    } else {
+      html += '<table style="width:100%;border-collapse:collapse">';
+      html += `<tr style="color:#8a7648;font-size:11.5px"><td></td><td>${z ? '玩家' : 'Player'}</td><td style="text-align:right">${z ? '今日最佳' : 'Today best'}</td><td style="text-align:right">${z ? '夜' : 'Nights'}</td><td style="text-align:right">${z ? '今日提交' : 'Subs'}</td></tr>`;
+      rows.forEach((r, i) => {
+        const medal = i === 0 ? '👑' : (i === 1 ? '🥈' : (i === 2 ? '🥉' : String(i + 1)));
+        const tag = i === 0 ? ` <span style="color:#ffd94d;font-size:11px">${z ? '擂主' : 'CHAMPION'}</span>` : '';
+        html += `<tr style="border-top:1px solid #3a2d18"><td style="padding:4px 2px;width:34px">${medal}</td><td style="padding:4px 2px">${who(r.a)}${tag}</td><td style="padding:4px 2px;text-align:right"><b style="color:#ffe9bd">${r.best.toLocaleString()}</b></td><td style="padding:4px 2px;text-align:right;color:#cbb391">${r.nights}</td><td style="padding:4px 2px;text-align:right;color:#cbb391">${r.subs}</td></tr>`;
+      });
+      html += '</table>';
+    }
+    const yrows = Object.entries(ydayMap).map(([a, v]) => ({ a, best: v.best })).sort((x, y) => y.best - x.best);
+    if(yrows.length){
+      html += `<div style="margin-top:8px;color:#cbb391">${z ? '昨日擂主' : 'Yesterday\'s champion'}: <b style="color:#ffe9bd">${who(yrows[0].a)}</b> · ${yrows[0].best.toLocaleString()}</div>`;
+    }
+    html += `<div style="margin-top:8px;font-size:12px;color:#8a7648">${z ? '擂台是荣誉榜：只比当天成绩，次日清零，不影响赛季榜排名与奖金分配。想攻擂，今天再交一局更高的每日局即可。' : 'The arena is an honours board: today only, resets daily, and does not affect season standings or prizes. To take the arena, submit a better daily run today.'}</div>`;
+    body.innerHTML = html;
+  }catch(e){
+    body.textContent = z ? '擂台数据读取失败，稍后再试。' : 'Failed to load the arena.';
+  }
+}
+$('arenaRefresh').onclick = loadArena;
 async function preloadXProfile(addr){
   if(!boardReady() || !addr) return;
   try{
@@ -1524,6 +1576,7 @@ async function showRefBar(){
 }
 showRefBar();
 loadBoard();
+loadArena();
 updateRegPreview();
 
 
