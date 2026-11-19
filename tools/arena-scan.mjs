@@ -44,10 +44,13 @@ async function rpc(method, params) {
 const hex = (n) => '0x' + n.toString(16);
 function wordAt(data, i) { return BigInt('0x' + data.slice(2 + i * 64, 2 + (i + 1) * 64)); }
 
+const SEL_GLOBAL_SUBS = '0x61a0b1b0'; // globalScoreSubmissions()
+
 async function main() {
-  let state = { watermark: GENESIS_SCAN - 1, days: {}, updatedAt: 0 };
+  let state = { watermark: GENESIS_SCAN - 1, days: {}, totalSeen: 0, slow: false, updatedAt: 0 };
   if (existsSync(OUT)) { try { state = JSON.parse(readFileSync(OUT, 'utf8')); } catch (e) {} }
   if (!state.days) state.days = {};
+  if (typeof state.totalSeen !== 'number') state.totalSeen = 0;
   if (!state.watermark || state.watermark < GENESIS_SCAN - 1) state.watermark = GENESIS_SCAN - 1;
 
   const head = parseInt(await rpc('eth_blockNumber', []), 16);
@@ -82,15 +85,17 @@ async function main() {
   let added = 0;
   let nChunks = 0;
   let partial = false;
+  const pace = state.slow ? 400 : 120;
   for (let cur = from; cur <= head; cur += CHUNK) {
     const to = Math.min(cur + CHUNK - 1, head);
     nChunks++;
     if (nChunks % 100 === 0) console.log(`arena: ...chunk ${nChunks}, at block ${to}/${head}, found ${added}`);
-    await sleep(120);
+    await sleep(pace);
     let logs;
     try { logs = await getLogsChunk(cur, to); }
     catch (e) { console.log(`arena: chunk ${cur}-${to} unreachable (${e.message}); saving partial progress, next run resumes`); partial = true; break; }
     for (const log of logs) {
+      state.totalSeen += 1; // every ScoreSubmitted event, both modes (verification counter)
       const mode = Number(wordAt(log.data, 0));
       if (mode !== 1) continue; // arena counts daily runs only
       const score = Number(wordAt(log.data, 1));
@@ -109,6 +114,26 @@ async function main() {
     // persist per chunk so an interrupted run loses nothing
     state.updatedAt = Math.floor(Date.now() / 1000);
     writeFileSync(OUT, JSON.stringify(state, null, 1));
+  }
+  if (!partial) {
+    // Verification: public endpoints sometimes return empty arrays under rate
+    // pressure instead of erroring, which would silently skip events. The
+    // contract's globalScoreSubmissions counter, read at the same head block,
+    // is the ground truth for how many ScoreSubmitted events exist in range.
+    try {
+      const raw = await rpc('eth_call', [{ to: ATLAS, data: SEL_GLOBAL_SUBS }, hex(head)]);
+      const expected = Number(BigInt(raw));
+      if (state.totalSeen !== expected) {
+        console.log(`arena: VERIFY FAILED: saw ${state.totalSeen} events, contract says ${expected}. Resetting for a slow full rescan next run.`);
+        state = { watermark: GENESIS_SCAN - 1, days: {}, totalSeen: 0, slow: true, updatedAt: Math.floor(Date.now() / 1000) };
+        writeFileSync(OUT, JSON.stringify(state, null, 1));
+        return;
+      }
+      state.slow = false;
+      console.log(`arena: verified: ${state.totalSeen} events == globalScoreSubmissions at block ${head}`);
+    } catch (e) {
+      console.log('arena: verification read failed (' + e.message + '); keeping scan result unverified');
+    }
   }
   // prune to the last 3 UTC days present
   const keys = Object.keys(state.days).sort();
