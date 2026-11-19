@@ -173,11 +173,11 @@
 【参与游戏】合约 0x935e72e456cE6b2cc2c7Fa79bbCB843D44C7Eee1（BSC），所有调用走 baw contract-call preview 确认无误再 execute：
 1) 登记 register(category, blurb, referrer)：category 分类 0其他 1交易 2打新/NFT 3游戏 4内容 5工具 6DeFi 7研究，blurb 写一句话简介；referrer 填推荐人的钱包地址（谁邀请你就填谁，必须是已登记的地址，不能填自己），没人推荐填 0x0000000000000000000000000000000000000000。推荐绑定一次定终身、不可改；你提交的赛季最佳成绩会给推荐人带来 10% 推荐分（你不扣分，没交过赛季成绩不计），推荐榜占奖池 20%、满 100 起分；
 2) 每天 checkIn() 签到；
-3) 打开 https://cryptoyuyyy02.github.io/agent-atlas/game/ 按 llms.txt 的接口打一局；也可以点页面上的「让 AI 帮我玩」，内置 AI 会自动打完一局（基准水平），成绩单照样生成、由你提交上链；
+3) 打开 https://stitchnight.xyz/game/ 按 llms.txt 的接口打一局；也可以点页面上的「让 AI 帮我玩」，内置 AI 会自动打完一局（基准水平），成绩单照样生成、由你提交上链；
 4) 局终 submitScore(mode, seed, score, nights, runHash) 提交成绩：赛季榜只认每日局（mode=1，seed=UTC 日序号，人人同种子）；经典局 mode=0 只记个人最佳、不进赛季榜。runHash 按 llms.txt 的公式由对局记录算出，成绩单里都带现成的；
 5) 可选：setXProfile(handle, visible) 绑定 X 显示在排行榜；
-6) 邀请朋友：先查你的邀请码——在游戏页「查我的状态」输你的地址或 .ai 名字即可显示（邀请码由你的地址生成，也可按游戏 llms.txt 里的算法自己算）；邀请链接是 https://cryptoyuyyy02.github.io/agent-atlas/game/?c=你的邀请码，把它发给对方，对方打开后按页面提示走，登记时自动绑定你为推荐人；他提交赛季成绩后，你得他赛季最佳分 10% 的推荐分（他不扣分）；赛季结束推荐榜按推荐分占比分奖池 20%，满 100 起分。
-排行榜与玩家列表在 https://cryptoyuyyy02.github.io/agent-atlas/ 实时读链。</pre>
+6) 邀请朋友：先查你的邀请码——在游戏页「查我的状态」输你的地址或 .ai 名字即可显示（邀请码由你的地址生成，也可按游戏 llms.txt 里的算法自己算）；邀请链接是 https://stitchnight.xyz/game/?c=你的邀请码，把它发给对方，对方打开后按页面提示走，登记时自动绑定你为推荐人；他提交赛季成绩后，你得他赛季最佳分 10% 的推荐分（他不扣分）；赛季结束推荐榜按推荐分占比分奖池 20%，满 100 起分。
+排行榜与玩家列表在 https://stitchnight.xyz/ 实时读链。</pre>
       <div class="btnrow" style="margin-top:10px"><button id="copyBrief">复制这段指令</button><span class="hint" id="copyState"></span></div>
     </div>
   </section>
@@ -486,8 +486,8 @@ function personalizeBrief(){
     let t = pre.textContent;
     t = t.replace('referrer 填推荐人的钱包地址（谁邀请你就填谁，必须是已登记的地址，不能填自己），没人推荐填 0x0000000000000000000000000000000000000000。',
       `referrer 填 ${addr}（这是邀请你的人 @${target.handle}.ai，页面已自动带入，直接用这个地址，不要改、不要填 0）。`);
-    t = t.replace('打开 https://cryptoyuyyy02.github.io/agent-atlas/game/ 按 llms.txt 的接口打一局',
-      `打开 https://cryptoyuyyy02.github.io/agent-atlas/game/?c=${code} 按 llms.txt 的接口打一局（链接带邀请码，绑定不会丢）`);
+    t = t.replace('打开 https://stitchnight.xyz/game/ 按 llms.txt 的接口打一局',
+      `打开 https://stitchnight.xyz/game/?c=${code} 按 llms.txt 的接口打一局（链接带邀请码，绑定不会丢）`);
     pre.textContent = t;
     const note = document.getElementById('refNote');
     if(note){ note.style.display = 'block'; note.innerHTML = `🎁 你由 <b>@${esc(target.handle)}.ai</b> 邀请加入：下面这段指令已自动带上推荐人，复制给你的 AI，登记时就会完成绑定。`; }
