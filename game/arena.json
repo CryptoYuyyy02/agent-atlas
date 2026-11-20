@@ -49,14 +49,31 @@
     "subs": 3
    },
    "0xddb1008aeb892e9cf8831fa901469a641cdbe114": {
-    "best": 6969420,
-    "nights": 823,
+    "best": 25179115,
+    "nights": 1498,
+    "subs": 2
+   }
+  },
+  "20777": {
+   "0x55dd0875f48bd69a61a75f44ff009e8b71bb2fd3": {
+    "best": 25178825,
+    "nights": 1500,
+    "subs": 1
+   },
+   "0xddb1008aeb892e9cf8831fa901469a641cdbe114": {
+    "best": 25567910,
+    "nights": 1495,
+    "subs": 1
+   },
+   "0x399ccd14b1ecd59d07c895eb6ea5029b007d9c46": {
+    "best": 30792610,
+    "nights": 1500,
     "subs": 1
    }
   }
  },
  "slow": false,
- "totalSeen": 17,
- "updatedAt": 1795129718,
- "watermark": 134588644
+ "totalSeen": 21,
+ "updatedAt": 1795146013,
+ "watermark": 134624810
 }
