@@ -71,14 +71,24 @@
     "subs": 1
    },
    "0xddb1008aeb892e9cf8831fa901469a641cdbe114": {
-    "best": 25624845,
+    "best": 26809475,
     "nights": 1498,
+    "subs": 2
+   },
+   "0xac039c9f0e67ed6cbfd93b5c29cc17784573f5f1": {
+    "best": 1435,
+    "nights": 6,
+    "subs": 1
+   },
+   "0x1c791364958417ccf7d129750f59c23f1d508ac8": {
+    "best": 1255,
+    "nights": 4,
     "subs": 1
    }
   }
  },
  "slow": false,
- "totalSeen": 29,
- "updatedAt": 1795225213,
- "watermark": 134800753
+ "totalSeen": 32,
+ "updatedAt": 1795250807,
+ "watermark": 134857586
 }
