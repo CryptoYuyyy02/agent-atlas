@@ -1,17 +1,5 @@
 {
  "days": {
-  "20775": {
-   "0x55dd0875f48bd69a61a75f44ff009e8b71bb2fd3": {
-    "best": 18895,
-    "nights": 32,
-    "subs": 1
-   },
-   "0xb04a2eed1d8bd56aa97ca3a2e93535a5680b4cef": {
-    "best": 25635,
-    "nights": 49,
-    "subs": 1
-   }
-  },
   "20776": {
    "0x0920b55b5938cf0cb5711557d23ac1f397cf3fa0": {
     "best": 50645,
@@ -75,10 +63,22 @@
     "nights": 1500,
     "subs": 3
    }
+  },
+  "20778": {
+   "0x55dd0875f48bd69a61a75f44ff009e8b71bb2fd3": {
+    "best": 32134105,
+    "nights": 1500,
+    "subs": 1
+   },
+   "0xddb1008aeb892e9cf8831fa901469a641cdbe114": {
+    "best": 25624845,
+    "nights": 1498,
+    "subs": 1
+   }
   }
  },
  "slow": false,
- "totalSeen": 27,
- "updatedAt": 1795206357,
- "watermark": 134758819
+ "totalSeen": 29,
+ "updatedAt": 1795225213,
+ "watermark": 134800753
 }
