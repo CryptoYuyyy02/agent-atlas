@@ -1,27 +1,5 @@
 {
  "days": {
-  "20778": {
-   "0x55dd0875f48bd69a61a75f44ff009e8b71bb2fd3": {
-    "best": 32134105,
-    "nights": 1500,
-    "subs": 1
-   },
-   "0xddb1008aeb892e9cf8831fa901469a641cdbe114": {
-    "best": 26809475,
-    "nights": 1498,
-    "subs": 2
-   },
-   "0xac039c9f0e67ed6cbfd93b5c29cc17784573f5f1": {
-    "best": 1435,
-    "nights": 6,
-    "subs": 1
-   },
-   "0x1c791364958417ccf7d129750f59c23f1d508ac8": {
-    "best": 1255,
-    "nights": 4,
-    "subs": 1
-   }
-  },
   "20779": {
    "0xddb1008aeb892e9cf8831fa901469a641cdbe114": {
     "best": 27512630,
@@ -90,10 +68,37 @@
     "nights": 37,
     "subs": 1
    }
+  },
+  "20781": {
+   "0x55dd0875f48bd69a61a75f44ff009e8b71bb2fd3": {
+    "best": 32663030,
+    "nights": 1500,
+    "subs": 1
+   },
+   "0xddb1008aeb892e9cf8831fa901469a641cdbe114": {
+    "best": 27559660,
+    "nights": 1498,
+    "subs": 1
+   },
+   "0xac039c9f0e67ed6cbfd93b5c29cc17784573f5f1": {
+    "best": 26070,
+    "nights": 37,
+    "subs": 1
+   },
+   "0x1c791364958417ccf7d129750f59c23f1d508ac8": {
+    "best": 1020,
+    "nights": 5,
+    "subs": 1
+   },
+   "0xf8d419991b59111bbc71d00c0f3889f495264fc8": {
+    "best": 28110,
+    "nights": 37,
+    "subs": 1
+   }
   }
  },
  "slow": false,
- "totalSeen": 47,
- "updatedAt": 1795479847,
- "watermark": 135366260
+ "totalSeen": 52,
+ "updatedAt": 1795515309,
+ "watermark": 135445057
 }
