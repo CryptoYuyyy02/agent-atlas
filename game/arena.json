@@ -74,11 +74,21 @@
     "best": 395,
     "nights": 3,
     "subs": 1
+   },
+   "0xf8d419991b59111bbc71d00c0f3889f495264fc8": {
+    "best": 30650,
+    "nights": 52,
+    "subs": 1
+   },
+   "0xddb1008aeb892e9cf8831fa901469a641cdbe114": {
+    "best": 27724395,
+    "nights": 1498,
+    "subs": 1
    }
   }
  },
  "slow": false,
- "totalSeen": 56,
- "updatedAt": 1795578423,
- "watermark": 135585295
+ "totalSeen": 58,
+ "updatedAt": 1795614865,
+ "watermark": 135666186
 }
